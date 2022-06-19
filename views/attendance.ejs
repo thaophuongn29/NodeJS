@@ -1,0 +1,142 @@
+<%- include('./includes/header.ejs')%>
+</head>
+
+<body>
+  <!-- Nav -->
+  <%- include('./includes/nav.ejs')%>
+
+  <h3 class="mt-3 mb-3">Chao <%= user.name %></h3>
+
+  <!-- From diem danh -->
+  <form action="/" method="POST">
+    <div class="card border-primary col-md-6 offset-md-3">
+      <h5 class="card-header text-center">Diem danh ngay <%= date %></h5>
+      <div class="card-body">
+        <div class="row">
+          <p class="col-4">Noi lam:</p>
+          <div class="col-8">
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" name="place" id="inlineRadio1" value="company" checked>
+              <label class="form-check-label" for="inlineRadio1">Cong ty</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" name="place" id="inlineRadio2" value="home">
+              <label class="form-check-label" for="inlineRadio2">Nha</label>
+            </div>
+          </div>
+        </div>
+        <input type='hidden' name="state" value="<% if (state==='true') {%>false<% } else {%>true<% } %>">
+        <input type="hidden" name="_id" value="<%= lastInfo._id %>">
+      </div>
+
+      <div class="text-center card-footer">
+        <button type="submit" class="btn btn-outline-primary"><% if(state==='true') {%>Checkout<% } else {%>Checkin<% } %></button>
+        <!-- Button trigger modal -->
+        <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">Nghi phep</button>
+      </div>
+    </div>
+  </form>
+
+  <!-- Trang thai -->
+  <h5 class="text-center mt-3">Trang thai: <% if(state==='true') {%>Dang lam viec<% } else {%>Nghi<% } %></h5>
+  <% if(state==='true') {%>
+  <div class="progress">
+    <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%"></div>
+  </div>
+  <% } %>
+
+  <!-- Check in -->
+  <div style="overflow: hidden;">
+    <div class="row row-cols-1 row-cols-md-3 g-4 mt-3 mb-3">
+      <% if (info) { for (let i of info) {  %>
+      <div class="col">
+        <div class="card h-100 border-primary">
+          <p class="card-header">checkinTime: <%= i.checkinTime %></p>
+          <div class="card-body">
+            <p>Noi lam viec: <%= i.place %></p>
+            <p>checkoutTime: <%= i.checkoutTime %></p>
+            <p>So gio da lam: <%= i.hours %>h</p>
+          </div>
+        </div>
+      </div>
+      <% }  } %>
+    </div>
+
+  </div>
+
+  <% if(info.length <= 0) { %>
+  <h5 class="text-center text-danger">Ban chua diem danh hom nay</h5>
+  <% } %>
+
+  <% if (state==='false') {%>
+  <h5 class="mt-5 mb-5 text-center">Tong so gio da lam ngay hom nay: <%= totalHours %>h </h5>
+  <% } %>
+
+  <!-- Modal -->
+  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Dang ki nghi phep</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <form action="/annualLeave" method="POST">
+          <div class="modal-body">
+            <% if(user.annualLeave == 0) {%>
+            <div class="mb-3 text-danger">Ban da het so ngay nghi phep</div>
+            <% } else {%>
+            <div class="mb-3">So ngay nghi phep con lai: <%= user.annualLeave %> ngay</div>
+            <% } %>
+
+            <div class="mb-3">
+              <label for="date" class="form-label">Chon ngay nghi:</label>
+              <input type="date" name="date" id="date" required>
+            </div>
+            <div class="mb-3">
+              <label for="customRange1" class="form-label">Chon so ngay nghi:</label>
+              <span id="demo1"></span>
+              <input name="days" type="range" class="form-range" min="0" max="<%= user.annualLeave%>" step="1" id="customRange1" value="0">
+            </div>
+            <div class="mb-3">
+              <label for="customRange3" class="form-label">Chon so gio nghi:</label>
+              <span id="demo"></span>
+              <input name="hours" type="range" class="form-range" min="0" <% if(user.annualLeave >= 1) {%>max="8" <% } else {%>max="<%= user.annualLeave*8%>" <% } %> step="1" id="customRange3" value="0">
+            </div>
+            <div class="mb-3">
+              <label for="exampleFormControlTextarea1" class="form-label">Li do</label>
+              <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Huy</button>
+            <% if(user.annualLeave == 0) {%>
+            <button disabled type="button" class="btn btn-danger">Khong the dang ki</button>
+            <% } else { %>
+            <button type="submit" class="btn btn-primary">Dang ki</button>
+            <% } %>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  <!-- Modal -->
+
+  <!-- Footer -->
+  <%- include('./includes/footer.ejs')%>
+  <script>
+    const rangeInput = document.getElementById('customRange3')
+    const spanrange = document.getElementById('demo')
+    spanrange.innerHTML = rangeInput.value + 'h'
+    rangeInput.oninput = () => {
+      spanrange.innerHTML = rangeInput.value + 'h'
+    }
+    const rangeInput1 = document.getElementById('customRange1')
+    const spanrange1 = document.getElementById('demo1')
+    spanrange1.innerHTML = rangeInput1.value + ' ngay'
+    rangeInput1.oninput = () => {
+      spanrange1.innerHTML = rangeInput1.value + ' ngay'
+    }
+  </script>
+</body>
+
+</html>

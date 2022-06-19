@@ -1,0 +1,77 @@
+<%- include('./includes/header.ejs')%>
+</head>
+
+<body>
+  <%- include('./includes/nav.ejs')%>
+
+  <h3 class="text-center mt-3">Danh sach gio lam</h3>
+
+  <div class="text-center">
+    <label for="day">Chon ngay</label>
+    <input id="day" type="date">
+    <a class="btn btn-outline-primary btn-sm" id="findDay">Tim</a>
+
+    <div style="overflow: hidden;">
+      <div class="row row-cols-1 row-cols-md-3 g-4 mt-3">
+        <% if (users) { for (let info of users) {  %>
+        <div class="col">
+          <div class="card h-100 border-primary">
+            <div class="card-header">Ngay: <%= info.date %></div>
+            <div class="card-body">
+              <p class="card-text">Noi lam viec: <%= info.place %></p>
+              <p class="card-text">checkinTime: <%= info.checkinTime %></p>
+              <p class="card-text">checkoutTime: <%= info.checkoutTime %></p>
+              <p class="card-text">So gio da lam: <%= info.hours %>h</p>
+            </div>
+          </div>
+        </div>
+        <% }  }%>
+      </div>
+    </div>
+
+    <% if (state==='false') {%>
+    <h5 class="mt-3 mb-3 text-center">Tong so gio da lam ngay <%= date%>: <%= totalHours %>h </h5>
+    <h5 class="mt-3 mb-3 text-center">OverTime: <%= overTime %>h </h5>
+    <% } %>
+
+    <hr class="mt-3">
+
+
+    <h3 class="text-center mt-5">Thong tin luong thang nam <%= year %></h3>
+
+    <div class="text-center">
+      <label for="month">Chon thang</label>
+      <select style="display: inline; width: 10%" id="month" class="form-select" aria-label="Default select example">
+        <% for(let i = 1; i <= 12; i++) { %>
+        <option value='<%= i %>'><%= i %></option>
+        <% } %>
+      </select>
+      <a class="btn btn-outline-primary" id="findMonth">Tim</a>
+
+    </div>
+
+    <div class="card border-primary col-6 offset-3 text-center mt-5 mb-5">
+      <p class="card-header">Thang <%= month %></p>
+      <div class="card-body">
+        <p>Luong: <%= salary %></p>
+      </div>
+    </div>
+
+
+    <%- include('./includes/footer.ejs')%>
+    <script>
+      const monthInput = document.getElementById('month')
+      const findMonth = document.getElementById('findMonth')
+      findMonth.onclick = () => {
+        findMonth.href = `?month=${monthInput.value}`
+      }
+
+      const dayInput = document.getElementById('day')
+      const findDay = document.getElementById('findDay')
+      findDay.onclick = () => {
+        findDay.href = `?day=${dayInput.value}`
+      }
+    </script>
+</body>
+
+</html>

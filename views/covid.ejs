@@ -1,0 +1,97 @@
+<%- include('./includes/header.ejs')%>
+</head>
+
+<body>
+  <%- include('./includes/nav.ejs')%>
+  <h3 class="text-center mt-5">Dang ki thong tin covid</h3>
+
+  <!-- Form dang ki than nhiet -->
+  <div class="card mt-5 mb-5 border-primary col-10 col-md-8 col-lg-6 offset-1 offset-md-2 offset-lg-3">
+    <h5 class="card-header text-center">Dang ki thong tin than nhiet</h5>
+    <form action="/covid" method="POST">
+      <div class="card-body row">
+        <label class="form-label col-md-4" for="temperature">Nhiet do co the: </label>
+        <div class="col-md-8 mb-3">
+          <input required class="form-control" type="number" name="temperature" id="temperature" min="36" max="40" step="0.1">
+        </div>
+        <label class="form-label col-md-4" for="date">Ngay dang ki</label>
+        <div class="col-md-8 mb-3">
+          <input required class="form-control" type="date" name="date" id="date">
+        </div>
+        <label class="form-label col-md-4" for="time">Gio dang ki</label>
+        <div class="col-md-8 mb-3">
+          <input required class="form-control" type="time" name="time" id="time" max="15:00" min="09:00">
+        </div>
+        <button type="submit" class="btn btn-outline-primary d-grid gap-2 col-4 mx-auto mt-3">Dang ki</button>
+      </div>
+    </form>
+  </div>
+  <!-- Form dang ki than nhiet -->
+
+
+  <!-- Form vaccine -->
+
+  <div class="card mb-5 border-primary col-10 col-md-8 col-lg-6 offset-1 offset-md-2 offset-lg-3">
+    <h5 class="card-header text-center">Dang ki thong tin tiem vaccine</h5>
+    <form action="/covid" method="POST">
+      <div class="card-body row">
+        <label class="form-label col-md-4" for="vaccine1">Loai Vaccine mui 1</label>
+        <div class="col-md-8 mb-3">
+          <input required class="form-control" type="text" name="vaccine1" id="vaccine1">
+        </div>
+
+        <label class="form-label col-md-4" for="dateVaccine1">Ngay tiem mui 1</label>
+        <div class="col-md-8 mb-3">
+          <input required class="form-control" type="date" name="dateVaccine1" id="dateVaccine1">
+        </div>
+
+        <label class="form-label col-md-4" for="vaccine2">Loai Vaccine mui 2</label>
+        <div class="col-md-8 mb-3">
+          <input required class="form-control" type="text" name="vaccine2" id="vaccine2">
+        </div>
+
+        <label class="form-label col-md-4" for="dateVaccine2">Ngay tiem mui 2</label>
+        <div class="col-md-8 mb-3">
+          <input required class="form-control" type="date" name="dateVaccine2" id="dateVaccine2">
+        </div>
+        <button type="submit" class="btn btn-outline-primary d-grid gap-2 col-4 mx-auto mt-3">Dang ki</button>
+      </div>
+    </form>
+  </div>
+
+  <!-- Form vaccine -->
+
+  <!-- Form duong tinh -->
+
+  <div class="card mb-5 border-primary col-10 col-md-8 col-lg-6 offset-1 offset-md-2 offset-lg-3">
+    <h5 class="card-header text-center">Dang ki thong tin duong tinh covid</h5>
+    <div class="card-body">
+      <form action="/covid" method="POST">
+        <div class="text-center">
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="negative" id="inlineRadio1" value="true">
+            <label class="form-check-label" for="inlineRadio1">Duong tinh</label>
+          </div>
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="negative" id="inlineRadio2" value="false" checked>
+            <label class="form-check-label" for="inlineRadio2">Am tinh</label>
+          </div>
+        </div>
+        <button type="submit" class="btn btn-outline-primary d-grid gap-2 col-4 mx-auto mt-3">Dang ki</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Form duong tinh -->
+
+  <%- include('./includes/footer.ejs')%>
+  <script>
+    const vaccine1 = document.getElementById('dateVaccine1')
+    const vaccine2 = document.getElementById('dateVaccine2')
+    vaccine2.onclick = () => {
+      vaccine2.min = vaccine1.value
+    }
+  </script>
+</body>
+
+</html>

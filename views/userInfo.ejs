@@ -1,0 +1,64 @@
+<%- include('./includes/header.ejs')%>
+<% if (edit) {%>
+<script>
+  $(document).ready(function() {
+    $("#exampleModal").modal('show');
+  });
+</script>
+<% } %>
+</head>
+
+<body>
+  <%- include('./includes/nav.ejs')%>
+  <!-- Modal -->
+  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Chinh sua hinh anh ca nhan</h5>
+          <a href="/user">
+            <button type="button" class="btn-close" aria-label="Close"></button>
+          </a>
+        </div>
+        <form action="/user" method="POST">
+          <div class="modal-body">
+            <label>Nhap link anh</label>
+            <input type="text" name="image" required>
+          </div>
+          <div class="modal-footer">
+            <a href="/user">
+              <button type="button" class="btn btn-secondary">Huy</button>
+            </a>
+            <button type="submit" class="btn btn-primary">Luu</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="row g-0">
+      <div class="col-12 col-md-4 align-self-center">
+        <img src="<%= user.image %>" class="img-fluid rounded-start" style="width: 100%;">
+      </div>
+      <div class="col-12 col-md-8">
+        <div class="card-body">
+          <h3 class="card-title">Thong tin nhan vien</h3>
+          <p class="card-text">Ho ten: <%= user.name %></p>
+          <p class="card-text">Ngay sinh: <%= doB %></p>
+          <p class="card-text">He so luong: <%= user.salaryScale %></p>
+          <p class="card-text">Ngay vao cong ty: <%= startDate %></p>
+          <p class="card-text">Phong: <%= user.department %></p>
+          <p class="card-text">So ngay nghi phep: <%= user.annualLeave %></p>
+          <span class="text-center" data-bs-toggle="modal" data-bs-target="#exampleModal">
+            <a href="?edit=true">Chinh sua hinh anh<i class="fa fa-pencil-square-o"></i></a>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <%- include('./includes/footer.ejs')%>
+
+</body>
+
+</html>
