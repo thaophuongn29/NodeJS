@@ -1,0 +1,163 @@
+<%- include('./includes/header.ejs')%>
+</head>
+
+<body>
+  <%- include('./includes/nav.ejs')%>
+  <h3 class="text-center mt-5">Danh sach nhan vien</h3>
+
+  <!-- Ten nhan vien -->
+  <div style="overflow: hidden;">
+    <div class="row">
+      <% for (let user of users) { %>
+      <div class="col-xs-12 col-md-4 text-center mt-3">
+        <a href="/confirm/<%= user._id %>" class="btn btn-primary" style="width: 90%;"><%= user.name %></a>
+      </div>
+      <% } %>
+    </div>
+  </div>
+  <!-- Ten nhan vien -->
+
+  <!-- Hien danh sach gio lam nhan vien da chon -->
+  <% if (info) { %>
+  <form action="/confirm" method="POST">
+    <h5 class="text-center mt-5">Danh sach gio lam nhan vien <%= user.name %>
+      <input type="hidden" name="confirm" value="<% if(user.confirm) { %>false<% } else { %>true<% } %>">
+      <input type="hidden" name="userId" value="<%= user._id %>">
+      <button type="submit" class="btn btn-outline-primary <% if(user.confirm) { %>btn-outline-danger<% } %>"><% if(user.confirm) { %>Huy xac nhan<% } else { %>Xac nhan<% } %></button>
+    </h5>
+  </form>
+
+  <!-- Loc theo thang -->
+  <div class="text-center">
+    <label for="month">Chon thang</label>
+    <select style="display: inline; width: 20%" id="month" class="form-select" aria-label="Default select example">
+      <% for(let i = 1; i <= 12; i++) { %>
+      <option value='<%= i %>'><%= i %>/2022</option>
+      <% } %>
+    </select>
+    <a class="btn btn-outline-primary" id="findMonth">Tim</a>
+  </div>
+  <!-- Loc theo thang -->
+
+  <!-- Thong tin chi tiet gio lam -->
+  <% if(info.length > 0) { %>
+  <div style="overflow: hidden;">
+    <div class="row row-cols-1 row-cols-md-3 g-4 mt-3">
+      <div class="col">
+        <div class="card h-100 border-primary">
+          <div class="card-header">Ngay: <%= info[0].date %>
+            <form action="/confirm/<%= user._id %>" method="POST">
+              <input type="hidden" name="id" value="<%= info[0]._id %>">
+              <button class="btn btn-danger" style="float: right; transform: translate(40%, -80%);" type="submit">X</button>
+            </form>
+          </div>
+          <div class="card-body">
+            <p class="card-text">Noi lam viec: <%= info[0].place %></p>
+            <p class="card-text">checkinTime: <%= info[0].checkinTime %></p>
+            <p class="card-text">checkoutTime: <%= info[0].checkoutTime %></p>
+            <p class="card-text">So gio da lam: <%= info[0].hours %>h</p>
+          </div>
+        </div>
+      </div>
+      <% var i = 0; var totalHours = info[i].hours; var overTime = 0; %>
+      <%  while (i < info.length -1) { %>
+      <%  if (info[i].date == info[i + 1].date) { %>
+      <%   totalHours += info[i + 1].hours; %>
+      <div class="col">
+        <div class="card h-100 border-primary">
+          <div class="card-header">Ngay: <%= info[i+1].date %>
+            <form action="/confirm/<%= user._id %>" method="POST">
+              <input type="hidden" name="id" value="<%= info[i+1]._id %>">
+              <button class="btn btn-danger" style="float: right; transform: translate(40%, -80%);" type="submit">X</button>
+            </form>
+          </div>
+          <div class="card-body">
+            <p class="card-text">Noi lam viec: <%= info[i+1].place %></p>
+            <p class="card-text">checkinTime: <%= info[i+1].checkinTime %></p>
+            <p class="card-text">checkoutTime: <%= info[i+1].checkoutTime %></p>
+            <p class="card-text">So gio da lam: <%= info[i+1].hours %>h</p>
+          </div>
+        </div>
+      </div>
+      <%   i++; %>
+      <% } else { %>
+      <% totalHours = info[i].annualLeave ? info.annualLeave <= 1 ? totalHours + info[i].annualLeave * 8 : totalHours + 8 : totalHours %>
+    </div>
+    <h5 class="text-center mt-3 mb-3">AnnualLeave: <%= info[i].annualLeave ? info[i].annualLeave <= 1 ? info[i].annualLeave * 8 : 8 : 0 %>h</h5>
+    <h5 class="text-center mt-3 mb-3">Tong so gio da lam ngay <%= info[i].date %>: <%= totalHours %></h5>
+    <h5 class="text-center mt-3 mb-3">OverTime: <%= (totalHours - 8) > 0 ? (totalHours - 8).toFixed(2) : 0 %></h5>
+    <hr>
+    <div class="row row-cols-1 row-cols-md-3 g-4 mt-3">
+      <div class="col">
+        <div class="card h-100 border-primary">
+          <div class="card-header">Ngay: <%= info[i+1].date %>
+            <form action="/confirm/<%= user._id %>" method="POST">
+              <input type="hidden" name="id" value="<%= info[i+1]._id %>">
+              <button class="btn btn-danger" style="float: right; transform: translate(40%, -80%);" type="submit">X</button>
+            </form>
+          </div>
+          <div class="card-body">
+            <p class="card-text">Noi lam viec: <%= info[i+1].place %></p>
+            <p class="card-text">checkinTime: <%= info[i+1].checkinTime %></p>
+            <p class="card-text">checkoutTime: <%= info[i+1].checkoutTime %></p>
+            <p class="card-text">So gio da lam: <%= info[i+1].hours %>h</p>
+          </div>
+        </div>
+      </div>
+      <%   totalHours = info[i + 1].hours; %>
+      <%   i++; %>
+      <% } %>
+      <% } %>
+      <% console.log(totalHours) %>
+    </div>
+    <% totalHours = info[i].annualLeave ? info.annualLeave <= 1 ? totalHours + info[i].annualLeave * 8 : totalHours + 8 : totalHours %>
+    <h5 class="text-center mt-3 mb-3">AnnualLeave: <%= info[i].annualLeave ? info[i].annualLeave <= 1 ? info[i].annualLeave * 8 : 8 : 0 %>h</h5>
+
+    <h5 class="text-center mt-3 mb-3">Tong so gio da lam ngay <%= info[info.length -1].date %>: <%= totalHours %></h5>
+    <h5 class="text-center mt-3 mb-3">OverTime: <%= (totalHours - 8) > 0 ? (totalHours - 8).toFixed(2) : 0 %></h5>
+  </div>
+  <!-- Thong tin chi tiet gio lam -->
+
+
+  <% } %>
+
+
+  <!-- <div style="overflow: hidden;">
+    <div class="row row-cols-1 row-cols-md-3 g-4 mt-3">
+      <% for (let i of info) {  %>
+      <div class="col">
+        <div class="card h-100 border-primary">
+          <div class="card-header">Ngay: <%= i.date %>
+            <form action="/confirm/<%= user._id %>" method="POST">
+              <input type="hidden" name="id" value="<%= i._id %>">
+              <button class="btn btn-danger" style="float: right; transform: translate(40%, -80%);" type="submit">X</button>
+            </form>
+          </div>
+          <div class="card-body">
+            <p class="card-text">Noi lam viec: <%= i.place %></p>
+            <p class="card-text">checkinTime: <%= i.checkinTime %></p>
+            <p class="card-text">checkoutTime: <%= i.checkoutTime %></p>
+            <p class="card-text">So gio da lam: <%= i.hours %>h</p>
+          </div>
+        </div>
+      </div>
+      <% }%>
+    </div>
+  </div> -->
+
+
+  <% } %>
+
+
+  <%- include('./includes/footer.ejs')%>
+  <script>
+    // Tim thang hien thi
+    const monthInput = document.getElementById('month')
+    const findMonth = document.getElementById('findMonth')
+    findMonth.onclick = () => {
+      findMonth.href = `?month=${monthInput.value}`
+    }
+  </script>
+</body>
+
+</html>

@@ -10,12 +10,12 @@ const covidSchema = new Schema({
   },
   register: {
     temperature: Decimal128,
-    date: Date,
+    date: String,
     time: String,
   },
   vaccines: {
-    vaccine1: { name: String, date: Date },
-    vaccine2: { name: String, date: Date },
+    vaccine1: { name: String, date: String },
+    vaccine2: { name: String, date: String },
   },
   negative: Boolean,
 });

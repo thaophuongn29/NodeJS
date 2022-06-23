@@ -10,7 +10,7 @@
 
 <body>
   <%- include('./includes/nav.ejs')%>
-  <!-- Modal -->
+  <!-- Modal chinh sua hinh anh-->
   <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
@@ -20,10 +20,10 @@
             <button type="button" class="btn-close" aria-label="Close"></button>
           </a>
         </div>
-        <form action="/user" method="POST">
+        <form action="/user" method="POST" enctype="multipart/form-data">
           <div class="modal-body">
-            <label>Nhap link anh</label>
-            <input type="text" name="image" required>
+            <label></label>
+            <input type="file" name="image" required>
           </div>
           <div class="modal-footer">
             <a href="/user">
@@ -35,11 +35,13 @@
       </div>
     </div>
   </div>
+  <!-- Modal chinh sua hinh anh-->
 
+  <!-- Thong tin nhan vien -->
   <div class="card">
     <div class="row g-0">
-      <div class="col-12 col-md-4 align-self-center">
-        <img src="<%= user.image %>" class="img-fluid rounded-start" style="width: 100%;">
+      <div class="col-12 col-md-4 align-self-center text-center">
+        <img src="<%= user.image %>" class="img-fluid rounded-start" style="width: 100%; max-width: 300px;">
       </div>
       <div class="col-12 col-md-8">
         <div class="card-body">
@@ -57,6 +59,11 @@
       </div>
     </div>
   </div>
+  <!-- Thong tin nhan vien -->
+
+
+  <!-- Footer -->
+  <%- include('./includes/footer.ejs')%>
 
 </body>
 

@@ -2,7 +2,12 @@
 </head>
 
 <body>
+  <!-- nav -->
   <%- include('./includes/nav.ejs')%>
+
+  <!-- User -->
+  <% if(isAuthenticated.user) { %>
+
   <h3 class="text-center mt-5">Dang ki thong tin covid</h3>
 
   <!-- Form dang ki than nhiet -->
@@ -30,7 +35,6 @@
 
 
   <!-- Form vaccine -->
-
   <div class="card mb-5 border-primary col-10 col-md-8 col-lg-6 offset-1 offset-md-2 offset-lg-3">
     <h5 class="card-header text-center">Dang ki thong tin tiem vaccine</h5>
     <form action="/covid" method="POST">
@@ -58,11 +62,9 @@
       </div>
     </form>
   </div>
-
   <!-- Form vaccine -->
 
   <!-- Form duong tinh -->
-
   <div class="card mb-5 border-primary col-10 col-md-8 col-lg-6 offset-1 offset-md-2 offset-lg-3">
     <h5 class="card-header text-center">Dang ki thong tin duong tinh covid</h5>
     <div class="card-body">
@@ -81,10 +83,38 @@
       </form>
     </div>
   </div>
-
   <!-- Form duong tinh -->
 
+  <!-- Mangger -->
+  <% } else { %>
+  <h3 class="text-center mt-5 mb-5">Thong tin covid cua nhan vien</h3>
+  <% for (let user of users) {  %>
+  <div class="card mb-3">
+    <div class="row g-0">
+      <div class="col-xs-12 col-sm-4 align-self-center text-center">
+        <img src="<%= user.userId.image %>" class="img-fluid rounded-start" style="width: 100%;max-width: 224px;">
+      </div>
+      <div class="col-xs-12 col-sm-8 h-100">
+        <div class="card-body">
+          <h3 class="card-title">Thong tin nhan vien</h3>
+          <p class="card-text">Ho ten: <%= user.userId.name %></p>
+          <p class="card-text">Nhiet do co the: <%= user.register.temperature %>, ngay: <%= user.register.date %>, luc: <%= user.register.time %></p>
+          <p class="card-text">Vaccine 1: <%= user.vaccines.vaccine1.name %>, ngay: <%= user.vaccines.vaccine1.date %></p>
+          <p class="card-text">Vaccine 2: <%= user.vaccines.vaccine2.name %>, ngay: <%= user.vaccines.vaccine2.date %></p>
+          <p class="card-text">Duong tinh: <% if(user.negative === false) { %>Khong<% } else { %>Co<% } %> <a style="float: right;" href="/covid/<%= user.userId._id %>">Download.pdf</a></p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <% }  %>
+  <% } %>
+  <!-- Manager -->
+
+  <%- include('./includes/footer.ejs')%>
+
+
   <script>
+    // hien thi ngay vaccine2 > vaccine1
     const vaccine1 = document.getElementById('dateVaccine1')
     const vaccine2 = document.getElementById('dateVaccine2')
     vaccine2.onclick = () => {

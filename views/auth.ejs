@@ -1,0 +1,25 @@
+<%- include('./includes/header.ejs')%>
+</head>
+
+<body>
+  <%- include('./includes/nav.ejs')%>
+  <div class="card mt-5 mb-5 border-primary col-10 col-md-8 col-lg-6 offset-1 offset-md-2 offset-lg-3">
+    <form action="/login" method="POST">
+      <div class="card-body row">
+        <label class="form-label col-md-4" for="email">Email</label>
+        <div class="col-md-8 mb-3">
+          <input required class="form-control" type="email" name="email" id="email">
+        </div>
+        <label class="form-label col-md-4" for="password">Mat khau</label>
+        <div class="col-md-8 mb-3">
+          <input required class="form-control" type="password" name="password" id="password">
+        </div>
+        <button type="submit" class="btn btn-outline-primary d-grid gap-2 col-4 mx-auto mt-3">Dang nhap</button>
+      </div>
+    </form>
+  </div>
+  <%- include('./includes/footer.ejs')%>
+
+</body>
+
+</html>

@@ -3,6 +3,7 @@
 
 <body>
   <%- include('./includes/nav.ejs')%>
+  <em>Lien he quan li <b><%= user.manager.name %></b> ma id <%= user.manager._id %></em>
 
   <h3 class="text-center mt-3">Danh sach gio lam</h3>
 
@@ -34,6 +35,11 @@
     <h5 class="mt-3 mb-3 text-center">OverTime: <%= overTime %>h </h5>
     <% } %>
 
+    <!-- Phan trang -->
+    <div style="overflow: hidden;">
+      <%- include('./includes/pagination.ejs')%>
+    </div>
+
     <hr class="mt-3">
 
 
@@ -57,14 +63,17 @@
       </div>
     </div>
 
-
+    <!-- Footer -->
+    <%- include('./includes/footer.ejs')%>
     <script>
+      // loc theo thang
       const monthInput = document.getElementById('month')
       const findMonth = document.getElementById('findMonth')
       findMonth.onclick = () => {
         findMonth.href = `?month=${monthInput.value}`
       }
 
+      //loc theo ngay
       const dayInput = document.getElementById('day')
       const findDay = document.getElementById('findDay')
       findDay.onclick = () => {

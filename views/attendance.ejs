@@ -30,12 +30,17 @@
       </div>
 
       <div class="text-center card-footer">
-        <button type="submit" class="btn btn-outline-primary"><% if(state==='true') {%>Checkout<% } else {%>Checkin<% } %></button>
+        <% if(user.confirm) {%>
+        <em class="text-danger" style="display: block;">Ban dang bi khoa chuc nang diem danh</em>
+        <% } %>
+        <button type="submit" class="btn btn-outline-primary <% if(user.confirm) {%>disabled<% } %>"><% if(state==='true') {%>Checkout<% } else {%>Checkin<% } %></button>
         <!-- Button trigger modal -->
-        <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">Nghi phep</button>
+        <button type="button" class="btn btn-outline-primary <% if(user.confirm) {%>disabled<% } %>" data-bs-toggle="modal" data-bs-target="#exampleModal">Nghi phep</button>
       </div>
     </div>
   </form>
+  <!-- From diem danh -->
+
 
   <!-- Trang thai -->
   <h5 class="text-center mt-3">Trang thai: <% if(state==='true') {%>Dang lam viec<% } else {%>Nghi<% } %></h5>
@@ -44,6 +49,7 @@
     <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%"></div>
   </div>
   <% } %>
+  <!-- Trang thai -->
 
   <!-- Check in -->
   <div style="overflow: hidden;">
@@ -61,8 +67,8 @@
       </div>
       <% }  } %>
     </div>
-
   </div>
+  <!-- Checkin -->
 
   <% if(info.length <= 0) { %>
   <h5 class="text-center text-danger">Ban chua diem danh hom nay</h5>
@@ -72,7 +78,7 @@
   <h5 class="mt-5 mb-5 text-center">Tong so gio da lam ngay hom nay: <%= totalHours %>h </h5>
   <% } %>
 
-  <!-- Modal -->
+  <!-- Modal dang ki ngay nghi -->
   <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
@@ -122,13 +128,18 @@
   <!-- Modal -->
 
   <!-- Footer -->
+  <%- include('./includes/footer.ejs')%>
+
   <script>
+    // Chon so gio nghi
     const rangeInput = document.getElementById('customRange3')
     const spanrange = document.getElementById('demo')
     spanrange.innerHTML = rangeInput.value + 'h'
     rangeInput.oninput = () => {
       spanrange.innerHTML = rangeInput.value + 'h'
     }
+
+    // Chon so ngay nghi
     const rangeInput1 = document.getElementById('customRange1')
     const spanrange1 = document.getElementById('demo1')
     spanrange1.innerHTML = rangeInput1.value + ' ngay'
