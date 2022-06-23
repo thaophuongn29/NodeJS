@@ -105,9 +105,9 @@ mongoose
   .connect(MONGODB_URI)
   .then(() => {
     console.log("Connected!");
-    // app.listen(process.env.PORT || 8080, "0.0.0.0", () => {
-    //   console.log("Server is running!");
-    // });
-    app.listen(3000);
+    app.listen(process.env.PORT || 8080, "0.0.0.0", () => {
+      console.log("Server is running!");
+    });
+    // app.listen(3000);
   })
   .catch((err) => console.log(err));
